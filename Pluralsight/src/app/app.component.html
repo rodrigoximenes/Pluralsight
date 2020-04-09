@@ -1,11 +1,17 @@
-<mat-sidenav-container>
-    <mat-sidenav #sidenav mode="side" [(opened)]="opened">
-        <button mat-button [routerLink]="['/welcome']" routerLinkActive="active">Home</button>
-    </mat-sidenav>
-    <mat-sidenav-content>
-        <button mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
-        <div>
+<div class="example-container">
+    <mat-toolbar color="primary" class="example-toolbar">
+        <button mat-icon-button (click)="sidenav.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <h1>Responsive App</h1>
+    </mat-toolbar>
+
+    <mat-sidenav-container class="example-sidenav-container">
+        <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+            <button mat-button [routerLink]="['/welcome']" routerLinkActive="active">Home</button>
+        </mat-sidenav>
+        <mat-sidenav-content>
             <router-outlet></router-outlet>
-        </div>
-    </mat-sidenav-content>
-</mat-sidenav-container>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
