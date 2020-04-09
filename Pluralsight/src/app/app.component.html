@@ -1,1 +1,11 @@
-<router-outlet></router-outlet>
+<mat-sidenav-container>
+    <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+        <button mat-button [routerLink]="['/welcome']" routerLinkActive="active">Home</button>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <button mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
+        <div>
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>
