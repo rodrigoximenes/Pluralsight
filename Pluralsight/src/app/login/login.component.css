@@ -1,0 +1,25 @@
+mat-card {
+  min-width: 300px;
+  position: absolute;
+  top: 20px;
+  left: 50px;
+}
+
+mat-card-actions {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+mat-card-content {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 15px  20px;
+}
+
+mat-form-field {
+    width: 100%;
+}

@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -11,6 +14,7 @@ import { AppData } from './app-data';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { SharedComponent } from './shared/shared.component';
 
@@ -19,6 +23,7 @@ import { SharedComponent } from './shared/shared.component';
     AppComponent,
     HomeComponent,
     SharedComponent,
+    LoginComponent,
     PageNotFoundComponent,
   ],
   imports: [
@@ -26,11 +31,14 @@ import { SharedComponent } from './shared/shared.component';
     BrowserAnimationsModule,
     AppRoutingModule,
     MatSidenavModule,
+    MatInputModule,
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
+    MatCardModule,
     MatListModule,
-    InMemoryWebApiModule.forRoot(AppData, { delay: 1000 })
+    MatFormFieldModule,
+    InMemoryWebApiModule.forRoot(AppData, { delay: 1000 }),
   ],
   providers: [],
   bootstrap: [AppComponent],
