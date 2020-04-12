@@ -25,6 +25,12 @@ table {
   width: 100%;
 }
 
+.align-right {
+  display: flex;
+  padding: 21px 0;
+  justify-content: flex-end;
+}
+
 .head-table {
   width: 100%;
   display: flex;

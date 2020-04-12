@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { combineLatest, BehaviorSubject, EMPTY } from 'rxjs';
+import { BehaviorSubject, combineLatest, EMPTY } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { ProductCategoryService } from 'src/app/product-categories/product-category.service';
 import { ProductService } from '../product.service';
-import { map, catchError } from 'rxjs/operators';
-import { Product } from '../product';
 
 @Component({
   selector: 'app-product-list',
@@ -29,8 +28,8 @@ export class ProductListComponent implements OnInit {
       return EMPTY;
     })
   );
-  
-  colunasTabela: string[] = ['productName', 'productCode', 'category', 'price'];
+
+  colunasTabela: string[] = ['productName', 'productCode', 'category', 'price', 'edit'];
   dataASource = this.products$;
 
   constructor(
