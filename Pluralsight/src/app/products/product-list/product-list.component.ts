@@ -9,7 +9,7 @@ interface Food {
   viewValue: string;
 }
 @Component({
-  selector: 'app-product-list',
+  selector: 'product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
 })
@@ -18,7 +18,6 @@ export class ProductListComponent implements OnInit {
   categorySelectedAction$ = this.categorySelectedSubject.asObservable();
 
   selectedValue: string;
-  selectedCar: string;
 
   foods: Food[] = [
     {value: 'steak-0', viewValue: 'Steak'},
@@ -64,11 +63,11 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  editProduct(elemento) {
+  deleteProduct(elemento) {
     console.log(elemento);
   }
 
-  deleteProduct(elemento) {
+  openDetailsProduct(elemento){
     console.log(elemento);
   }
 

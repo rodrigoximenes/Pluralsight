@@ -21,7 +21,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <button mat-button type="button" color="primary">Novo produto</button>
+      <button mat-button type="button" color="primary" [routerLink]="['./0/edit']">Novo produto</button>
     </div>
     <div class="table-container mat-elevation-z8">
       <table mat-table [dataSource]="products$ | async" class="mat-elevation-z8">
@@ -49,7 +49,7 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef> </th>
           <td mat-cell class="align-right" *matCellDef="let element">
-            <button mat-icon-button (click)="editProduct(element)">
+            <button mat-icon-button [routerLink]="[element.id, 'edit']">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button (click)="deleteProduct(element)">
@@ -58,7 +58,8 @@
           </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="colunasTabela; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: colunasTabela;"></tr>
+        <tr mat-row *matRowDef="let element; columns: colunasTabela;"
+         (click)="openDetailsProduct(element)"></tr>
       </table>
     </div>
 
