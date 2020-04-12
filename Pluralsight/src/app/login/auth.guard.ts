@@ -1,20 +1,30 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, CanLoad, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, Route, UrlSegment } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
-export class AuthGuard implements CanActivate{
+export class AuthGuard implements CanActivate, CanLoad {
+  constructor(private authService: AuthService, private router: Router) {}
 
-    constructor(private authService: AuthService,
-                private router: Router) { }
-
-    canActivate(
+  canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    state: RouterStateSnapshot
+  ):
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree {
     return this.checkLoggedIn(state.url);
+  }
+
+  canLoad(
+    route: Route,
+    segments: UrlSegment[]
+  ): boolean | Observable<boolean> | Promise<boolean> {
+    return this.checkLoggedIn(segments.join('/'));
   }
 
   checkLoggedIn(url: string): boolean {
@@ -22,7 +32,6 @@ export class AuthGuard implements CanActivate{
       return true;
     }
 
-    // Retain the attempted URL for redirection
     this.authService.redirectUrl = url;
     this.router.navigate(['/login']);
     return false;

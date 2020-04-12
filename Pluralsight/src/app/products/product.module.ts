@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,6 +17,7 @@ import { ProductEditTagsComponent } from './product-edit/product-edit-tags/produ
 import { ProductEditComponent } from './product-edit/product-edit.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductResolver } from './product-resolver.service';
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
   imports: [
@@ -50,6 +52,8 @@ import { ProductResolver } from './product-resolver.service';
     MatListModule,
     MatFormFieldModule,
     ReactiveFormsModule,
+    CommonModule,
+    MatTableModule
   ],
   declarations: [
     ProductListComponent,
