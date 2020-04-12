@@ -4,13 +4,6 @@ mat-card {
   margin: 2em;
 }
 
-mat-card-actions {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-end;
-  align-items: center;
-}
-
 mat-card-content {
   display: flex;
   flex-flow: column wrap;
@@ -22,8 +15,9 @@ mat-form-field {
   padding-bottom: 10px;
 }
 
-.tabela {
+.table-container {
   height: 400px;
+  width: 100%;
   overflow: auto;
 }
 
@@ -31,7 +25,7 @@ table {
   width: 100%;
 }
 
-.head-table{
+.head-table {
   width: 100%;
   display: flex;
   flex-flow: row wrap;
