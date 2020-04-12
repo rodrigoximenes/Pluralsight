@@ -4,15 +4,27 @@ import { catchError, map } from 'rxjs/operators';
 import { ProductCategoryService } from 'src/app/product-categories/product-category.service';
 import { ProductService } from '../product.service';
 
+interface Food {
+  value: string;
+  viewValue: string;
+}
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
 })
 export class ProductListComponent implements OnInit {
-
   private categorySelectedSubject = new BehaviorSubject<number>(0);
   categorySelectedAction$ = this.categorySelectedSubject.asObservable();
+
+  selectedValue: string;
+  selectedCar: string;
+
+  foods: Food[] = [
+    {value: 'steak-0', viewValue: 'Steak'},
+    {value: 'pizza-1', viewValue: 'Pizza'},
+    {value: 'tacos-2', viewValue: 'Tacos'}
+  ];
 
   products$ = combineLatest([
     this.productService.productsWithAdd$,
@@ -29,7 +41,20 @@ export class ProductListComponent implements OnInit {
     })
   );
 
-  colunasTabela: string[] = ['productName', 'productCode', 'category', 'price', 'actions'];
+  categories$ = this.productCategoryService.productCategories$.pipe(
+    catchError((err) => {
+      //this.errorMessageSubject.next(err);
+      return EMPTY;
+    })
+  );
+
+  colunasTabela: string[] = [
+    'productName',
+    'productCode',
+    'category',
+    'price',
+    'actions',
+  ];
   dataASource = this.products$;
 
   constructor(
@@ -37,6 +62,18 @@ export class ProductListComponent implements OnInit {
     private productCategoryService: ProductCategoryService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  editProduct(elemento) {
+    console.log(elemento);
+  }
+
+  deleteProduct(elemento) {
+    console.log(elemento);
+  }
+
+  onSelected(categoryId: string): void {
+    // this.categorySelectedSubject.next(+categoryId);
+    console.log(categoryId);
   }
 }
