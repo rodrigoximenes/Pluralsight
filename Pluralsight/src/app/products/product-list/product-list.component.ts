@@ -29,7 +29,7 @@ export class ProductListComponent implements OnInit {
     })
   );
 
-  colunasTabela: string[] = ['productName', 'productCode', 'category', 'price', 'edit'];
+  colunasTabela: string[] = ['productName', 'productCode', 'category', 'price', 'actions'];
   dataASource = this.products$;
 
   constructor(
