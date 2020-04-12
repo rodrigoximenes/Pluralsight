@@ -11,3 +11,7 @@ export interface Product {
     supplierIds?: number[];
   }
   
+  export interface ProductResolved {
+    product: Product;
+    error?: any;
+  }

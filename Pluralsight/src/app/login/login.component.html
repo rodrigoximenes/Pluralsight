@@ -20,7 +20,7 @@
             </mat-form-field>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-button type="button">Cancel</button>
+            <button mat-button type="button" [routerLink]="['/home']">Cancel</button>
             <button mat-button type="submit" color="primary" [disabled]="!userForm.valid">Log in</button>
         </mat-card-actions>
     </form>

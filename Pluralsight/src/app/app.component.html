@@ -6,7 +6,8 @@
             </button>
             <h1>Angular Expert</h1>
         </div>
-        <button mat-button routerLink='/login'> Log In </button>
+        <button mat-button *ngIf="!isLoggedIn" routerLink='/login'> Log In </button>
+        <button mat-button *ngIf="isLoggedIn" (click)="logout()"> Log Out </button>
     </mat-toolbar>
 
     <mat-sidenav-container class="sidenav-container">
