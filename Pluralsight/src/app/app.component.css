@@ -28,3 +28,7 @@ mat-toolbar {
   justify-content: flex-start;
   align-items: center;
 }
+
+h1~span{
+  cursor: pointer;
+}

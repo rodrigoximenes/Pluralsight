@@ -4,7 +4,9 @@
             <button mat-icon-button (click)="sidenav.toggle()">
                 <mat-icon>menu</mat-icon>
             </button>
-            <h1>Angular Expert</h1>
+            <button mat-button>
+                <h1 (click)="sidenav.toggle()">Angular Expert</h1>
+            </button>
         </div>
         <button mat-button *ngIf="!isLoggedIn" routerLink='/login'> Log In </button>
         <button mat-button *ngIf="isLoggedIn" (click)="logout()"> Log Out </button>
@@ -13,8 +15,8 @@
     <mat-sidenav-container class="sidenav-container">
         <mat-sidenav #sidenav mode="over" [(opened)]="opened">
             <mat-nav-list>
-                <a mat-list-item routerLink='/home'>Home</a>
-                <a mat-list-item routerLink='/products'>Produtos</a>
+                <a mat-list-item routerLink='/home' (click)="sidenav.toggle()">Home</a>
+                <a mat-list-item routerLink='/products' (click)="sidenav.toggle()">Produtos</a>
             </mat-nav-list>
         </mat-sidenav>
         <mat-sidenav-content>
