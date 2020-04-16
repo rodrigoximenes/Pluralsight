@@ -10,26 +10,27 @@ import { Product } from '../product';
   selector: 'product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListComponent implements OnInit {
-
   filteredProducts: Subject<any>;
   _listFilter: string = '';
-  
-  get listFilter(): string{
+
+  get listFilter(): string {
     return this._listFilter;
   }
 
   set listFilter(value: string) {
     this._listFilter = value;
-    this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter) : this.products$;
+    this.filteredProducts = this.listFilter
+      ? this.performFilter(this.listFilter)
+      : this.products$;
   }
 
   // performFilter(filterBy: string): any {
   //   filterBy = filterBy.toLocaleLowerCase();
 
-  //   return this.products$.pipe( 
+  //   return this.products$.pipe(
   //     filter(
   //     prod =>
   //     prod.productName.toLocaleLowerCase().indexOf(filterBy) !== -1));
@@ -39,18 +40,22 @@ export class ProductListComponent implements OnInit {
   private categorySelectedSubject = new BehaviorSubject<number>(0);
   categorySelectedAction$ = this.categorySelectedSubject.asObservable();
 
-  private textTypedSubject = new BehaviorSubject<number>(0);
-  textTypedAction$ = this.categorySelectedSubject.asObservable();
+  private textTypedSubject = new Subject<string>();
+  textTypedAction$ = this.textTypedSubject.asObservable();
 
   products$ = combineLatest([
     this.productService.productsWithCategory$,
-    this.categorySelectedAction$
+    this.categorySelectedAction$,
+    this.textTypedAction$
   ]).pipe(
-    map(([products, selectedCategoryId]) => 
-      products.filter( prod =>
+    map(([products, selectedCategoryId, search]) => {
+      products.filter((prod) =>
         selectedCategoryId ? prod.categoryId === selectedCategoryId : true
-      )
-    )
+      ),
+      products.filter((prod) => 
+      search ? prod.productName.toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) !== -1)
+    }
+   )
   );
 
   categories$ = this.productCategoryService.productCategories$.pipe(
@@ -88,7 +93,7 @@ export class ProductListComponent implements OnInit {
     console.log(categoryId.id);
   }
 
-  onKeyUp(text: string): void{
+  onKeyUp(text: string): void {
     this.textTypedSubject.next(text);
     console.log(text);
   }
