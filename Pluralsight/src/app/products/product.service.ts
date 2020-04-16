@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { combineLatest, merge, Observable, of, Subject, throwError } from 'rxjs';
-import { catchError, map, scan, shareReplay, tap } from 'rxjs/operators';
+import { combineLatest, Observable, of, throwError } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { ProductCategoryService } from '../product-categories/product-category.service';
 import { Product } from './product';
 
@@ -26,30 +26,12 @@ export class ProductService {
     this.productCategoryService.productCategories$,
   ]).pipe(
     map(([products, categories]) =>
-      products.map(
-        (product) =>
-          ({
-            ...product,
-            category: categories.find((c) => product.categoryId === c.id).name,
-            searchKey: [product.productName],
-          } as Product)
-      )
-    ),
-    shareReplay(1)
-  );
-
-  private productInsertedSubject = new Subject<Product>();
-  productInsertedAction$ = this.productInsertedSubject.asObservable();
-
-  productsWithAdd$ = merge(
-    this.productsWithCategory$,
-    this.productInsertedAction$
-  ).pipe(
-    scan((acc: Product[], value: Product) => [...acc, value]),
-    catchError((err) => {
-      console.error(err);
-      return throwError(err);
-    })
+      products.map((product) => ({
+        ...product,
+        category: categories.find((cat) => product.categoryId === cat.id).name,
+        searchKey: [product.productName],
+      }))
+    )
   );
 
   getProduct(id: number): Observable<Product> {

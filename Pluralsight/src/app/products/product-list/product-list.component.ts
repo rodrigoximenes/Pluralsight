@@ -1,43 +1,56 @@
-import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, combineLatest, EMPTY } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { BehaviorSubject, EMPTY, combineLatest, Subject } from 'rxjs';
+import { catchError, map, tap, filter } from 'rxjs/operators';
 import { ProductCategoryService } from 'src/app/product-categories/product-category.service';
 import { ProductService } from '../product.service';
+import { ProductCategory } from 'src/app/product-categories/product-category';
+import { Product } from '../product';
 
-interface Food {
-  value: string;
-  viewValue: string;
-}
 @Component({
   selector: 'product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductListComponent implements OnInit {
+
+  filteredProducts: Subject<any>;
+  _listFilter: string = '';
+  
+  get listFilter(): string{
+    return this._listFilter;
+  }
+
+  set listFilter(value: string) {
+    this._listFilter = value;
+    this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter) : this.products$;
+  }
+
+  // performFilter(filterBy: string): any {
+  //   filterBy = filterBy.toLocaleLowerCase();
+
+  //   return this.products$.pipe( 
+  //     filter(
+  //     prod =>
+  //     prod.productName.toLocaleLowerCase().indexOf(filterBy) !== -1));
+  // }
+
+  // Action stream
   private categorySelectedSubject = new BehaviorSubject<number>(0);
   categorySelectedAction$ = this.categorySelectedSubject.asObservable();
 
-  selectedValue: string;
-
-  foods: Food[] = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'}
-  ];
+  private textTypedSubject = new BehaviorSubject<number>(0);
+  textTypedAction$ = this.categorySelectedSubject.asObservable();
 
   products$ = combineLatest([
-    this.productService.productsWithAdd$,
-    this.categorySelectedAction$,
+    this.productService.productsWithCategory$,
+    this.categorySelectedAction$
   ]).pipe(
-    map(([products, selectedCategoryId]) =>
-      products.filter((product) =>
-        selectedCategoryId ? product.categoryId === selectedCategoryId : true
+    map(([products, selectedCategoryId]) => 
+      products.filter( prod =>
+        selectedCategoryId ? prod.categoryId === selectedCategoryId : true
       )
-    ),
-    catchError((err) => {
-      // this.errorMessageSubject.next(err);
-      return EMPTY;
-    })
+    )
   );
 
   categories$ = this.productCategoryService.productCategories$.pipe(
@@ -54,7 +67,6 @@ export class ProductListComponent implements OnInit {
     'price',
     'actions',
   ];
-  dataASource = this.products$;
 
   constructor(
     private productService: ProductService,
@@ -67,12 +79,17 @@ export class ProductListComponent implements OnInit {
     console.log(elemento);
   }
 
-  openDetailsProduct(elemento){
+  openDetailsProduct(elemento) {
     console.log(elemento);
   }
 
-  onSelected(categoryId: string): void {
-    // this.categorySelectedSubject.next(+categoryId);
-    console.log(categoryId);
+  onSelected(categoryId: ProductCategory): void {
+    this.categorySelectedSubject.next(+categoryId.id);
+    console.log(categoryId.id);
+  }
+
+  onKeyUp(text: string): void{
+    this.textTypedSubject.next(text);
+    console.log(text);
   }
 }
