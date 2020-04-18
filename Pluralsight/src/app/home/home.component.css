@@ -1,4 +1,16 @@
 mat-card {
   max-width: 100%;
+  min-height: 50%;
   margin: 10px;
+}
+
+mat-card-content {
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+mat-card-content div{
+  align-self: flex-end;
 }

@@ -20,6 +20,7 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { SharedComponent } from './shared/shared.component';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { SharedComponent } from './shared/shared.component';
   ],
   imports: [
     BrowserModule,
+    MatListModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     MatSidenavModule,

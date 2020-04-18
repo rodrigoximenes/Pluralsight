@@ -1,17 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { BehaviorSubject, EMPTY, combineLatest, Subject } from 'rxjs';
-import {
-  catchError,
-  map,
-  tap,
-  filter,
-  debounceTime,
-  concatMap,
-} from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { BehaviorSubject, combineLatest, EMPTY } from 'rxjs';
+import { catchError, debounceTime, map } from 'rxjs/operators';
+import { ProductCategory } from 'src/app/product-categories/product-category';
 import { ProductCategoryService } from 'src/app/product-categories/product-category.service';
 import { ProductService } from '../product.service';
-import { ProductCategory } from 'src/app/product-categories/product-category';
-import { Product } from '../product';
 
 @Component({
   selector: 'product-list',
@@ -61,6 +53,7 @@ export class ProductListComponent implements OnInit {
     this.productsWithSelection$,
     this.textTypedAction$,
   ]).pipe(
+    debounceTime(500),
     map(([products, search]) =>
       products.filter(
         (prod) =>
