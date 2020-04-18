@@ -1,6 +1,13 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { BehaviorSubject, EMPTY, combineLatest, Subject } from 'rxjs';
-import { catchError, map, tap, filter } from 'rxjs/operators';
+import {
+  catchError,
+  map,
+  tap,
+  filter,
+  debounceTime,
+  concatMap,
+} from 'rxjs/operators';
 import { ProductCategoryService } from 'src/app/product-categories/product-category.service';
 import { ProductService } from '../product.service';
 import { ProductCategory } from 'src/app/product-categories/product-category';
@@ -13,49 +20,55 @@ import { Product } from '../product';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListComponent implements OnInit {
-  filteredProducts: Subject<any>;
-  _listFilter: string = '';
-
-  get listFilter(): string {
-    return this._listFilter;
-  }
-
-  set listFilter(value: string) {
-    this._listFilter = value;
-    this.filteredProducts = this.listFilter
-      ? this.performFilter(this.listFilter)
-      : this.products$;
-  }
-
-  // performFilter(filterBy: string): any {
-  //   filterBy = filterBy.toLocaleLowerCase();
-
-  //   return this.products$.pipe(
-  //     filter(
-  //     prod =>
-  //     prod.productName.toLocaleLowerCase().indexOf(filterBy) !== -1));
-  // }
+  textoDigitado: string;
 
   // Action stream
   private categorySelectedSubject = new BehaviorSubject<number>(0);
   categorySelectedAction$ = this.categorySelectedSubject.asObservable();
 
-  private textTypedSubject = new Subject<string>();
+  private textTypedSubject = new BehaviorSubject<string>('');
   textTypedAction$ = this.textTypedSubject.asObservable();
 
-  products$ = combineLatest([
+  productsWithSelection$ = combineLatest([
     this.productService.productsWithCategory$,
     this.categorySelectedAction$,
     this.textTypedAction$
   ]).pipe(
-    map(([products, selectedCategoryId, search]) => {
+    map(([products, selectedCategoryId, search]) =>
       products.filter((prod) =>
         selectedCategoryId ? prod.categoryId === selectedCategoryId : true
-      ),
-      products.filter((prod) => 
-      search ? prod.productName.toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) !== -1)
-    }
-   )
+      )
+    )
+  );
+
+  productsWithSearch$ = combineLatest([
+    this.productService.productsWithCategory$,
+    this.textTypedAction$,
+    this.categorySelectedAction$
+  ]).pipe(
+    debounceTime(1000),
+    map(([products, search, selectedCategoryId]) =>
+      products.filter(
+        (prod) =>
+          prod.productName
+            .toLocaleLowerCase()
+            .indexOf(search.toLocaleLowerCase()) !== -1
+      )
+    )
+  );
+
+  products$ = combineLatest([
+    this.productsWithSelection$,
+    this.textTypedAction$,
+  ]).pipe(
+    map(([products, search]) =>
+      products.filter(
+        (prod) =>
+          prod.productName
+            .toLocaleLowerCase()
+            .indexOf(search.toLocaleLowerCase()) !== -1
+      )
+    )
   );
 
   categories$ = this.productCategoryService.productCategories$.pipe(

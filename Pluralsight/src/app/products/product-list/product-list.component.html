@@ -7,7 +7,7 @@
       <div>
         <mat-form-field>
           <mat-label>Filtrar por</mat-label>
-          <input matInput type="text" (keyup)="onKeyUp($event.target.value)">
+          <input matInput type="text" [ngModel]="textoDigitado" (keyup)="onKeyUp($event.target.value)">
           <button mat-button matSuffix mat-icon-button>
             <mat-icon>search</mat-icon>
           </button>
@@ -15,7 +15,7 @@
         <mat-form-field>
           <mat-label>Categorias</mat-label>
           <mat-select (selectionChange)="onSelected($event.value)">
-            <mat-option value="0">Todas categorias</mat-option>
+            <mat-option value="0">Mostrar todas</mat-option>
             <mat-option *ngFor="let category of categories$ | async" [value]="category">
               {{category.name}}
             </mat-option>
