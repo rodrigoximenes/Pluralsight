@@ -29,9 +29,9 @@ import { ProductResolver } from './product-resolver.service';
         component: ProductListComponent,
       },
       {
-        path: ':id',
+        path: ':id/details',
         component: ProductDetailComponent,
-        resolve: { resolvedData: ProductResolver },
+        //resolve: { resolvedData: ProductResolver },
       },
       {
         path: ':id/edit',

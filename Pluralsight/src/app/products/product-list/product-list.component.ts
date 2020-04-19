@@ -53,7 +53,7 @@ export class ProductListComponent implements OnInit {
     this.productsWithSelection$,
     this.textTypedAction$,
   ]).pipe(
-    debounceTime(500),
+    debounceTime(1000),
     map(([products, search]) =>
       products.filter(
         (prod) =>

@@ -60,6 +60,7 @@
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="colunasTabela; sticky: true"></tr>
         <tr mat-row *matRowDef="let element; columns: colunasTabela;"
+        [routerLink]="[element.id,'details']"
          (click)="openDetailsProduct(element)"></tr>
       </table>
     </div>

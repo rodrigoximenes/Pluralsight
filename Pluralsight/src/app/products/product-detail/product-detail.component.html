@@ -1,1 +1,68 @@
-<p>product-detail works!</p>
+<mat-card>
+    <mat-card-header>
+      <mat-card-title>Produtos</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="head-table">
+        <div>
+          <mat-form-field>
+            <mat-label>Filtrar por</mat-label>
+            <input matInput type="text" (keyup)="onKeyUp($event.target.value)">
+            <button mat-button matSuffix mat-icon-button>
+              <mat-icon>search</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Categorias</mat-label>
+            <mat-select (selectionChange)="onSelected($event.value)">
+              <mat-option value="0">Mostrar todas</mat-option>
+              <mat-option *ngFor="let category of categories$ | async" [value]="category">
+                {{category.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <button mat-button type="button" color="primary" [routerLink]="['./0/edit']">Novo produto</button>
+      </div>
+      <div class="table-container mat-elevation-z8">
+        <table mat-table [dataSource]="products$ | async" class="mat-elevation-z8">
+  
+          <ng-container matColumnDef="productName">
+            <th mat-header-cell *matHeaderCellDef> Produto </th>
+            <td mat-cell *matCellDef="let element"> {{element.productName}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="productCode">
+            <th mat-header-cell *matHeaderCellDef> Código </th>
+            <td mat-cell *matCellDef="let element"> {{element.productCode}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef> Categoria </th>
+            <td mat-cell *matCellDef="let element"> {{element.category}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef> Preço </th>
+            <td mat-cell *matCellDef="let element"> {{element.price | currency:"USD":"symbol":"1.2-2"}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell class="align-right" *matCellDef="let element">
+              <button mat-icon-button [routerLink]="[element.id, 'edit']">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteProduct(element)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="colunasTabela; sticky: true"></tr>
+          <tr mat-row *matRowDef="let element; columns: colunasTabela;"
+           (click)="openDetailsProduct(element)"></tr>
+        </table>
+      </div>
+  
+    </mat-card-content>
+  </mat-card>

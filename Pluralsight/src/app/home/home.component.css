@@ -11,6 +11,8 @@ mat-card-content {
   justify-content: space-between;
 }
 
-mat-card-content div{
-  align-self: flex-end;
+mat-card-content footer{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
 }
