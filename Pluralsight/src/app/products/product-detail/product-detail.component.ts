@@ -13,22 +13,19 @@ import { pipe } from 'rxjs';
 export class ProductDetailComponent implements OnDestroy {
   produtoSelecionado: Product;
   id: number;
-  componenteAtivo: boolean;
+  componenteAtivo: boolean = true;
 
   constructor(
     private productService: ProductService,
     private route: ActivatedRoute
   ) {
     this.route.paramMap.subscribe((params) => {
-      this.id = +params.get('id'),
-      console.log(this.id)
+      (this.id = +params.get('id')), console.log(this.id);
     });
 
     this.productService
       .getProduct(this.id)
-      .pipe(
-        takeWhile(() => this.componenteAtivo),
-        tap((prod) => console.log(prod)))
+      .pipe(takeWhile(() => this.componenteAtivo))
       .subscribe((produto) => (this.produtoSelecionado = produto));
   }
 
