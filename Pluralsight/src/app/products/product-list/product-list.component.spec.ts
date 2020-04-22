@@ -1,22 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductListComponent } from './product-list.component';
+import { ProductService } from '../product.service';
+import { HttpClient } from '@angular/common/http';
+import { ProductCategoryService } from 'src/app/product-categories/product-category.service';
 
 describe('ProductListComponent', () => {
   let component: ProductListComponent;
-  let fixture: ComponentFixture<ProductListComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ProductListComponent ]
-    })
-    .compileComponents();
-  }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProductListComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    let produtoCategoriaService = new ProductCategoryService(new HttpClient(null));
+    let produtoService = new ProductService(new HttpClient(null), produtoCategoriaService);
+    component = new ProductListComponent(produtoService, produtoCategoriaService);
   });
 
   it('should create', () => {
